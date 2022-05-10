@@ -114,6 +114,56 @@ PUT /cacm_standard_myanalyzer1
     }
   }
 }
+```
+
+# standard 2
+
+```json
+PUT /cacm_standard_myanalyzer2
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer2": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "custom_shingle"
+          ]
+        }
+      },
+      "filter": {
+        "custom_shingle": {
+          "type": "shingle",
+          "min_shingle_size": 3,
+          "max_shingle_size": 3
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "unsigned_long"
+      },
+      "author": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text",
+        "fielddata": true
+      },
+      "date": {
+        "type": "date"
+      },
+      "summary": {
+        "type": "text",
+        "fielddata": true
+      }
+    }
+  }
+}
 
 POST _reindex
 {
@@ -121,7 +171,7 @@ POST _reindex
     "index": "cacm_raw"
   },
   "dest": {
-    "index": "cacm_standard_myanalyzer1",
+    "index": "cacm_standard_myanalyzer2",
     "pipeline": "mon_genial_pipeline"
   }
 }
