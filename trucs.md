@@ -26,7 +26,7 @@ POST _reindex
   },
   "dest": {
     "index": "cacm_standard_english",
-    "pipeline": "mon_genial_pipeline"
+    "pipeline": "my_pipeline"
   }
 }
 ```
@@ -59,11 +59,8 @@ POST _reindex
   },
   "dest": {
     "index": "cacm_standard_english",
-    "pipeline": "mon_genial_pipeline"
+    "pipeline": "my_pipeline"
   }
-}
-
-
 }
 ```
 
@@ -172,7 +169,63 @@ POST _reindex
   },
   "dest": {
     "index": "cacm_standard_myanalyzer2",
-    "pipeline": "mon_genial_pipeline"
+    "pipeline": "my_pipeline"
+  }
+}
+```
+
+# stop
+
+```json
+PUT /cacm_standard_myanalyzerstopwords
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer_stopwords": {
+          "tokenizer": "whitespace",
+          "filter": [ "custom_stopwords" ]
+        }
+      },
+      "filter" : {
+        "custom_stopwords" : {
+          "type" : "stop",
+          "stopwords_path" : "data/common_words.txt"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "unsigned_long"
+      },
+      "author": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text",
+        "fielddata": true
+      },
+      "date": {
+        "type": "date"
+      },
+      "summary": {
+        "type": "text",
+        "fielddata": true
+      }
+    }
+  }
+}
+
+POST _reindex
+{
+  "source": {
+    "index": "cacm_raw"
+  },
+  "dest": {
+    "index": "cacm_standard_myanalyzerstopwords",
+    "pipeline": "my_pipeline"
   }
 }
 ```
