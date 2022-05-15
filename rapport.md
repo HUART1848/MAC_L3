@@ -2,12 +2,13 @@
 author: Olivier D'Ancona & Hugo Huart & Nelson Jeanrenaud
 title: "MAC - Labo 3 : Indexing and Search with Elasticsearch"
 
-documentclass: extarticle
-fontsize: 13pt
-geometry: margin=2cm
+fontsize: 12pt
+geometry: margin=1.5cm
 output: pdf_document
+toc: true
 ---
 
+\pagebreak
 # 2.2 Indexing
 
 Using the following pipeline:
@@ -100,7 +101,7 @@ POST _reindex
 
 API requests to create **`cacm_termvector`**:
 
-### Mappings:
+#### Mappings:
 
 ```json
 PUT /cacm_termvector
@@ -173,6 +174,9 @@ Sizes of the indexes:
 * `cacm_standard` : **1.48MB**
 * `cacm_termvector` : **2.07MB**
 
+\pagebreak
+# 2.3 Reading Index
+
 ## D.6
 
 Using the following request, we observe that **Thacher Jr., H. C.** is the author
@@ -194,7 +198,6 @@ GET /cacm_standard/_search
 }
 ```
 
-\pagebreak
 ## D.7
 
 Using the following request, we observe that the top 10 terms are:
@@ -227,11 +230,13 @@ GET /cacm_standard/_search
 ```
 
 \pagebreak
+# 2.4 Using different Analyzers
+
 ## D.8
 
 The following requests create indexes with the required analyzers.
 
-### `whitespace` analyzer
+#### `whitespace` analyzer
 
 ```json
 PUT /cacm_standard_whitespace
@@ -264,7 +269,8 @@ POST _reindex
 }
 ```
 
-### `english` analyzer
+\pagebreak
+#### `english` analyzer
 
 ```json
 PUT /cacm_standard_english
@@ -297,7 +303,8 @@ POST _reindex
 }
 ```
 
-### `standard` analyzer with shingles of size 1 and 2
+\pagebreak
+#### `standard` analyzer with shingles of size 1 and 2
 
 ```json
 PUT /cacm_standard_myanalyzer1
@@ -357,7 +364,8 @@ POST _reindex
 }
 ```
 
-### `standard` analyzer with shingles of size 3
+\pagebreak
+#### `standard` analyzer with shingles of size 3
 
 ```json
 PUT /cacm_standard_myanalyzer2
@@ -418,7 +426,8 @@ POST _reindex
 }
 ```
 
-### `stop` analyzer
+\pagebreak
+#### `stop` analyzer
 
 ```json
 PUT /cacm_standard_stopwords
@@ -476,4 +485,18 @@ POST _reindex
 
 ## D.9
 
-The differences
+Explanation of the analyzers, according to the Elasticsearch documentation:
+
+* `whitespace` : Breaks text into terms whenever a whitespace is encountered.
+* `english` : Targeted for english text. It features relevant stop words,
+plural to singular conversion and other similar language-specific filters.
+* `standard` with shingles of size 1 and 2 : Produce shingles (or word n-gram) up to a size of two
+
+  The text `"I Love MAC"` would produce `["I", "I Love", "Love", "Love MAC", "MAC"]`.
+* `standard` with shingles of size 3 only : Produce shingles (or word n-gram) of size 3.
+
+  The text `"I Love MAC"` would produce `["I", "I Love MAC", "Love", "MAC"]`.
+* `stop` : Uses a list of words as stop words that will be removed from the the requested text
+
+## D.10
+
