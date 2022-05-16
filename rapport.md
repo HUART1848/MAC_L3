@@ -492,3 +492,96 @@ Several statements can be made regarding the previous results, here are our 3 co
 1. All the indexes have the same number of document, the presentation of the documents is not altered.
 2. The shingle-based indexes have the most terms. This make sense because they are the only indexes that add new terms in summary (the shingles).
 3. The custom stop words provided in `stop` are more restrictive than the default ones of `english`. This is confirmed by the lower number of terms in the `stop` index.
+
+# D.12
+
+Here are the API requests of the relevant queries:
+
+#### 1.
+
+```json
+GET /cacm_standard_english/_search
+{
+  "query" : {
+    "query_string" : {
+      "query" : "Information Retrieval",
+      "default_field": "summary"
+    }
+  },
+  "_source": "id"
+}
+```
+
+#### 2.
+
+```json
+GET /cacm_standard_english/_search
+{
+  "query" : {
+    "query_string" : {
+      "query" : "Information AND Retrieval",
+      "default_field": "summary"
+    }
+  },
+  "_source": "id"
+}
+```
+
+\pagebreak
+#### 3.
+
+```json
+GET /cacm_standard_english/_search
+{
+  "query" : {
+    "query_string" : {
+      "query" : "(Retrieval OR (Retrieval AND Information)) AND NOT Database",
+      "default_field": "summary"
+    }
+  },
+  "_source": "id"
+}
+```
+
+#### 4.
+
+```json
+GET /cacm_standard_english/_search
+{
+  "query" : {
+    "query_string" : {
+      "query" : "Info*",
+      "default_field": "summary"
+    }
+  },
+  "_source": "id"
+}
+```
+
+#### 5.
+
+```json
+GET /cacm_standard_english/_search
+{
+  "query" : {
+    "query_string" : {
+      "query" : "\"Information Retrieval\"~5",
+      "default_field": "summary"
+    }
+  },
+  "_source": "id"
+}
+```
+
+# D.13
+
+Here are the results of the previous API requests:
+
+1. **240** hits
+2. **36** hits
+3. **69** hits
+4. **205** hits
+5. **30** hits
+
+# D.14
+
