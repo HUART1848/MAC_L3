@@ -3,7 +3,7 @@ author: Olivier D'Ancona & Hugo Huart & Nelson Jeanrenaud
 title: "MAC - Labo 3 : Indexing and Search with Elasticsearch"
 
 fontsize: 12pt
-geometry: margin=2cm
+geometry: margin=1.5cm
 output: pdf_document
 toc: true
 ---
@@ -153,7 +153,7 @@ API request to query a term vector:
 GET /cacm_termvector/_termvectors/gNa1ZYAB7VfE5TWZZFs7
 ```
 
-`gNa1ZYAB7VfE5TWZZFs7` being the ID of a document that has a `summary` field
+`gNa1ZYAB7VfE5TWZZFs7` being the ID of a document that has a `summary` field.
 
 ## D.4
 
@@ -282,11 +282,11 @@ PUT /cacm_standard_english
   },
   "mappings": {
     "properties": {
-      "id":{"type": "unsigned_long"},
-      "author": {"type": "keyword"},
-      "title":{"type": "text", "fielddata": true},
-      "date":{"type": "date"},
-      "summary":{"analyzer": "english", "type": "text", "fielddata" : true}
+      "id": {" type": "unsigned_long" },
+      "author": { "type": "keyword"},
+      "title": { "type": "text", "fielddata": true },
+      "date": { "type": "date" },
+      "summary": { "analyzer": "english", "type": "text", "fielddata": true }
     }
   }
 }
@@ -333,8 +333,7 @@ PUT /cacm_standard_myanalyzer1
     "properties": {
       "id": { "type": "unsigned_long" },
       "author": { "type": "keyword" },
-      "title": { "type": "text",
-        "fielddata": true },
+      "title": { "type": "text", "fielddata": true },
       "date": { "type": "date" },
       "summary": { "analyzer": "my_analyzer1", "type": "text", "fielddata": true }
     }
@@ -375,7 +374,8 @@ PUT /cacm_standard_myanalyzer2
         "custom_shingle": {
           "type": "shingle",
           "min_shingle_size": 3,
-          "max_shingle_size": 3
+          "max_shingle_size": 3,
+          "output_unigrams": false
         }
       }
     }
@@ -454,14 +454,14 @@ POST _reindex
 Explanation of the analyzers, according to the Elasticsearch documentation:
 
 * `whitespace` : Breaks text into terms whenever a whitespace is encountered.
-* `english` : Targeted for english text. It features relevant stop words,
+* `english` : Targeted for English text. It features relevant stop words,
 plural to singular conversion and other similar language-specific filters.
-* `standard` with shingles of size 1 and 2 : Produce shingles (or word n-gram) up to a size of two,
+* `standard` with shingles of size 1 and 2 : Produce shingles (or word n-gram) up to a size of two:
 
-  The text `"I Love MAC"` would produce `["I", "I Love", "Love", "Love MAC", "MAC"]`.
-* `standard` with shingles of size 3 only : Produce shingles (or word n-gram) of size 3,
+  _The text `"I Love MAC"` would produce `["I", "I Love", "Love", "Love MAC", "MAC"]`._
+* `standard` with shingles of size 3 only : Produce shingles (or word n-gram) of size 3:
 
-  The text `"I Love MAC"` would produce `["I", "I Love MAC", "Love", "MAC"]`.
+  _The text `"I Love MAC"` would produce `["I", "I Love MAC", "Love", "MAC"]`._
 * `stop` : Uses a list of words as stop words that will be removed from the the requested text.
 
 ## D.10
@@ -479,17 +479,19 @@ The results are:
 |**Analyzer type:**|`whitespace`|`english`|`standard` shingles 1-2|`standard` shingles 3|`stop`|
 |---:|---|---|---|---|---|
 |**a)**|3'202 docs|3'202 docs|3'202 docs|3'202 docs|3'202 docs|
-|**b)**|103'275 terms|72'298 terms|237'189 terms|242'248 terms|59'988 terms|
-|**c)**|of \newline the \newline is \newline and \newline a \newline to \newline in \newline for \newline The \newline are|which \newline us \newline comput \newline program \newline system \newline present \newline describ \newline paper \newline can \newline gener|the \newline of \newline a \newline is \newline and \newline to \newline in \newline for \newline are \newline of the|the \newline of \newline a \newline is \newline and \newline to \newline in \newline for \newline are \newline this|computer \newline system \newline paper \newline presented \newline time \newline program \newline data \newline method \newline algorithm \newline discussed|
-|**d)**|13'542'719 B|19'859'606 B|2'597'942 B|3'615'184 B|2'833'980 B|
+|**b)**|103'275 terms|72'298 terms|237'189 terms|144'518 terms|59'988 terms|
+|**c)**|_of_ \newline _the_ \newline _is_ \newline _and_ \newline _a_ \newline _to_ \newline _in_ \newline _for_ \newline _The_ \newline _are_|_which_ \newline _us_ \newline _comput_ \newline _program_ \newline _system_ \newline _present_ \newline _describ_ \newline _paper_ \newline _can_ \newline _gener_|_the_ \newline _of_ \newline _a_ \newline _is_ \newline _and_ \newline _to_ \newline _in_ \newline _for_ \newline _are_ \newline _of the_|_in this paper_ \newline _the use of_ \newline _the number of_ \newline _it is shown_ \newline _a set of_ \newline _in terms of_ \newline _the problem of_ \newline _is shown that_ \newline _a number of_ \newline _as well as_|_computer_ \newline _system_ \newline _paper_ \newline _presented_ \newline _time_ \newline _program_ \newline _data_ \newline _method_ \newline _algorithm_ \newline _discussed_|
+|**d)**|13'542'719 B|19'859'606 B|2'597'942 B|3'103'118 B|2'833'980 B|
 |**e)**|350 ms|250 ms|340 ms|300 ms|340 ms|
+
+_Note: the timings of point e) may vary significantly by 20 to 50ms_
 
 \pagebreak
 ## D.11
 
 Several statements can be made regarding the previous results, here are our 3 concluding ones:
 
-1. All the indexes have the same number of document, the presentation of the documents is not altered.
+1. All the indexes have the same number of documents, the presentation of the documents is not altered in that regard.
 2. The shingle-based indexes have the most terms. This make sense because they are the only indexes that add new terms in summary (the shingles).
 3. The custom stop words provided in `stop` are more restrictive than the default ones of `english`. This is confirmed by the lower number of terms in the `stop` index.
 
@@ -589,7 +591,7 @@ Here are the results of the previous API requests:
 
 ## D.14
 
-The new index with custom scoring method is created with the following API request:
+The new index with the custom scoring method is created with the following API request:
 
 ```json
 PUT /cacm_standard_score
@@ -600,7 +602,10 @@ PUT /cacm_standard_score
       "scripted_tfidf": {
         "type": "scripted",
         "script": {
-          "source": "double tf = 1 + Math.log(doc.freq); double idf = Math.log((field.docCount) / (term.docFreq + 1.0)) + 1.0; double norm = 1; return tf * idf * norm * query.boost;"
+          "source": "double tf = 1 + Math.log(doc.freq);
+                     double idf = Math.log((field.docCount) / (term.docFreq + 1.0)) + 1.0;
+                     double norm = 1;
+                     return tf * idf * norm * query.boost;"
         }
       }
     }
@@ -631,7 +636,7 @@ POST _reindex
 \pagebreak
 ## D.15
 
-Here are the top 10 results of the `compiler program` query with and without the custom scoring system:
+Top 10 results of the `compiler program` query with and without the custom scoring system:
 
 #### Default scoring:
 
@@ -811,7 +816,7 @@ Here are the top 10 results of the `compiler program` query with and without the
 \pagebreak
 ## D.16
 
-Here is the query with the custom function score:
+Query with custom function score:
 
 ```json
 GET /cacm_standard_stopwords/_search
