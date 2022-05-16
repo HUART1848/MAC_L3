@@ -3,7 +3,7 @@ author: Olivier D'Ancona & Hugo Huart & Nelson Jeanrenaud
 title: "MAC - Labo 3 : Indexing and Search with Elasticsearch"
 
 fontsize: 12pt
-geometry: margin=1.5cm
+geometry: margin=2cm
 output: pdf_document
 toc: true
 ---
@@ -252,7 +252,7 @@ PUT /cacm_standard_whitespace
       "author": {"type": "keyword"},
       "title":{"type": "text", "fielddata": true},
       "date":{"type": "date"},
-      "summary":{"type": "text", "fielddata" : true}
+      "summary":{"analyzer" : "whitespace", "type": "text", "fielddata" : true}
     }
   }
 }
@@ -436,7 +436,7 @@ PUT /cacm_standard_stopwords
     "analysis": {
       "analyzer": {
         "stopwords": {
-          "tokenizer": "whitespace",
+          "tokenizer": "lowercase",
           "filter": [ "custom_stopwords" ]
         }
       },
@@ -464,6 +464,7 @@ PUT /cacm_standard_stopwords
         "type": "date"
       },
       "summary": {
+        "analyzer" : "stopwords",
         "type": "text",
         "fielddata": true
       }
@@ -490,13 +491,31 @@ Explanation of the analyzers, according to the Elasticsearch documentation:
 * `whitespace` : Breaks text into terms whenever a whitespace is encountered.
 * `english` : Targeted for english text. It features relevant stop words,
 plural to singular conversion and other similar language-specific filters.
-* `standard` with shingles of size 1 and 2 : Produce shingles (or word n-gram) up to a size of two
+* `standard` with shingles of size 1 and 2 : Produce shingles (or word n-gram) up to a size of two,
 
   The text `"I Love MAC"` would produce `["I", "I Love", "Love", "Love MAC", "MAC"]`.
-* `standard` with shingles of size 3 only : Produce shingles (or word n-gram) of size 3.
+* `standard` with shingles of size 3 only : Produce shingles (or word n-gram) of size 3,
 
   The text `"I Love MAC"` would produce `["I", "I Love MAC", "Love", "MAC"]`.
-* `stop` : Uses a list of words as stop words that will be removed from the the requested text
+* `stop` : Uses a list of words as stop words that will be removed from the the requested text.
 
+\pagebreak
 ## D.10
 
+Using the Index stats and search APIs with the following types of requests:
+
+```
+GET /${INDEX_NAME}/_stats
+
+GET /${INDEX_NAME}/_search
+```
+
+The results are:
+
+|**Analyzer type:**|`whitespace`|`english`|`standard` shingles 1-2|`standard` shingles 3|`stop`|
+|---:|---|---|---|---|---|
+|**a)**|3'202 docs|3'202 docs|3'202 docs|3'202 docs|3'202 docs|
+|**b)**|103'275 terms|72'298 terms|237'189 terms|242'248 terms|59'988 terms|
+|**c)**|of \newline the \newline is \newline and \newline a \newline to \newline in \newline for \newline The \newline are|which \newline us \newline comput \newline program \newline system \newline present \newline describ \newline paper \newline can \newline gener|the \newline of \newline a \newline is \newline and \newline to \newline in \newline for \newline are \newline of the|the \newline of \newline a \newline is \newline and \newline to \newline in \newline for \newline are \newline this|computer \newline system \newline paper \newline presented \newline time \newline program \newline data \newline method \newline algorithm \newline discussed|
+|**d)**|13'542'719 B|19'859'606 B|2'597'942 B|3'615'184 B|2'833'980 B|
+|**e)**|350 ms|250 ms|340 ms|300 ms|340 ms|

@@ -183,7 +183,7 @@ PUT /cacm_standard_myanalyzerstopwords
     "analysis": {
       "analyzer": {
         "my_analyzer_stopwords": {
-          "tokenizer": "whitespace",
+          "tokenizer": "standard",
           "filter": [ "custom_stopwords" ]
         }
       },
