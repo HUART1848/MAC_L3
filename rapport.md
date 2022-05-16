@@ -485,7 +485,7 @@ The results are:
 |**e)**|350 ms|250 ms|340 ms|300 ms|340 ms|
 
 \pagebreak
-# D.11
+## D.11
 
 Several statements can be made regarding the previous results, here are our 3 concluding ones:
 
@@ -493,7 +493,9 @@ Several statements can be made regarding the previous results, here are our 3 co
 2. The shingle-based indexes have the most terms. This make sense because they are the only indexes that add new terms in summary (the shingles).
 3. The custom stop words provided in `stop` are more restrictive than the default ones of `english`. This is confirmed by the lower number of terms in the `stop` index.
 
-# D.12
+# 2.5 Searching
+
+## D.12
 
 Here are the API requests of the relevant queries:
 
@@ -573,7 +575,7 @@ GET /cacm_standard_english/_search
 }
 ```
 
-# D.13
+## D.13
 
 Here are the results of the previous API requests:
 
@@ -583,7 +585,9 @@ Here are the results of the previous API requests:
 4. **205** hits
 5. **30** hits
 
-# D.14
+# 2.6 Custom similarity 
+
+## D.14
 
 The new index with custom scoring method is created with the following API request:
 
@@ -625,7 +629,7 @@ POST _reindex
 ```
 
 \pagebreak
-# D.15
+## D.15
 
 Here are the top 10 results of the `compiler program` query with and without the custom scoring system:
 
@@ -805,7 +809,7 @@ Here are the top 10 results of the `compiler program` query with and without the
 ```
 
 \pagebreak
-# D.16
+## D.16
 
 Here is the query with the custom function score:
 
