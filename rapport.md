@@ -170,9 +170,9 @@ The official documentation of Elasticsearch describes a term vector as the follo
 
 Sizes of the indexes:
 
-* `cacm_raw` : **1.34MB**
-* `cacm_standard` : **1.48MB**
-* `cacm_termvector` : **2.07MB**
+* `cacm_raw` : **1.34 MB**
+* `cacm_standard` : **1.48 MB**
+* `cacm_termvector` : **2.07 MB**
 
 \pagebreak
 # 2.3 Reading Index
@@ -539,13 +539,15 @@ GET /cacm_standard_english/_search
 {
   "query" : {
     "query_string" : {
-      "query" : "(Retrieval OR (Retrieval AND Information)) AND NOT Database",
+      "query" : "Retrieval AND NOT Database",
       "default_field": "summary"
     }
   },
   "_source": "id"
 }
 ```
+
+_Note: The query was simplified using boolean algebra._
 
 #### 4.
 
@@ -644,82 +646,82 @@ Top 10 results of the `compiler program` query with and without the custom scori
 "hits" : [
       {
         "_index" : "cacm_standard",
-        "_id" : "-njFZYAB9pJXcpxGir2n",
-        "_score" : 4.59885,
+        "_id" : "O3jFZYAB9pJXcpxGibLi",
+        "_score" : 7.0958896,
         "_source" : {
-          "id" : "3130"
+          "id" : "123"
         }
       },
       {
         "_index" : "cacm_standard",
-        "_id" : "n3jFZYAB9pJXcpxGibfn",
-        "_score" : 4.5247345,
+        "_id" : "ZnjFZYAB9pJXcpxGibTl",
+        "_score" : 7.0101233,
         "_source" : {
-          "id" : "1503"
+          "id" : "678"
         }
       },
       {
         "_index" : "cacm_standard",
-        "_id" : "B3jFZYAB9pJXcpxGibLh",
-        "_score" : 4.391566,
+        "_id" : "NXjFZYAB9pJXcpxGir6n",
+        "_score" : 6.957088,
         "_source" : {
-          "id" : "71"
+          "id" : "3189"
         }
       },
       {
         "_index" : "cacm_standard",
-        "_id" : "2XjFZYAB9pJXcpxGibbm",
-        "_score" : 4.308632,
+        "_id" : "eXjFZYAB9pJXcpxGibfn",
+        "_score" : 6.926655,
         "_source" : {
-          "id" : "1305"
+          "id" : "1465"
         }
       },
       {
         "_index" : "cacm_standard",
-        "_id" : "MnjFZYAB9pJXcpxGir2m",
-        "_score" : 4.308632,
+        "_id" : "i3jFZYAB9pJXcpxGibjn",
+        "_score" : 6.7396317,
         "_source" : {
-          "id" : "2930"
+          "id" : "1739"
         }
       },
       {
         "_index" : "cacm_standard",
-        "_id" : "GnjFZYAB9pJXcpxGibbm",
-        "_score" : 4.2708445,
+        "_id" : "L3jFZYAB9pJXcpxGibjn",
+        "_score" : 6.4866796,
         "_source" : {
-          "id" : "1114"
+          "id" : "1647"
         }
       },
       {
         "_index" : "cacm_standard",
-        "_id" : "rXjFZYAB9pJXcpxGibrp",
-        "_score" : 4.139876,
+        "_id" : "pnjFZYAB9pJXcpxGirum",
+        "_score" : 6.4402065,
         "_source" : {
-          "id" : "2285"
+          "id" : "2534"
         }
       },
       {
         "_index" : "cacm_standard",
-        "_id" : "-XjFZYAB9pJXcpxGibTl",
-        "_score" : 4.1280527,
+        "_id" : "N3jFZYAB9pJXcpxGirul",
+        "_score" : 6.1307526,
         "_source" : {
-          "id" : "825"
+          "id" : "2423"
         }
       },
       {
         "_index" : "cacm_standard",
-        "_id" : "1njFZYAB9pJXcpxGibLj",
-        "_score" : 4.0737095,
+        "_id" : "FnjFZYAB9pJXcpxGibTk",
+        "_score" : 6.0692043,
         "_source" : {
-          "id" : "278"
+          "id" : "598"
         }
       },
       {
         "_index" : "cacm_standard",
-        "_id" : "mHjFZYAB9pJXcpxGibTl",
-        "_score" : 4.0378237,
+        "_id" : "f3jFZYAB9pJXcpxGibbm",
+        "_score" : 5.9121494,
         "_source" : {
-          "id" : "728"
+          "id" : "1215"
         }
       }
     ]
@@ -732,82 +734,82 @@ Top 10 results of the `compiler program` query with and without the custom scori
 "hits" : [
       {
         "_index" : "cacm_standard_score",
-        "_id" : "B3jFZYAB9pJXcpxGibLh",
-        "_score" : 11.760702,
+        "_id" : "pnjFZYAB9pJXcpxGirum",
+        "_score" : 14.1800995,
         "_source" : {
-          "id" : "71"
+          "id" : "2534"
         }
       },
       {
         "_index" : "cacm_standard_score",
-        "_id" : "q3jFZYAB9pJXcpxGibXl",
-        "_score" : 11.38064,
+        "_id" : "L3jFZYAB9pJXcpxGibjn",
+        "_score" : 12.428032,
         "_source" : {
-          "id" : "1003"
+          "id" : "1647"
         }
       },
       {
         "_index" : "cacm_standard_score",
-        "_id" : "n3jFZYAB9pJXcpxGibfn",
-        "_score" : 11.299849,
+        "_id" : "i3jFZYAB9pJXcpxGibjn",
+        "_score" : 11.304348,
         "_source" : {
-          "id" : "1503"
+          "id" : "1739"
         }
       },
       {
         "_index" : "cacm_standard_score",
-        "_id" : "-njFZYAB9pJXcpxGir2n",
-        "_score" : 11.153636,
+        "_id" : "N3jFZYAB9pJXcpxGirul",
+        "_score" : 11.304348,
         "_source" : {
-          "id" : "3130"
+          "id" : "2423"
         }
       },
       {
         "_index" : "cacm_standard_score",
-        "_id" : "1njFZYAB9pJXcpxGibLj",
-        "_score" : 10.735809,
+        "_id" : "O3jFZYAB9pJXcpxGibLi",
+        "_score" : 11.234488,
         "_source" : {
-          "id" : "278"
+          "id" : "123"
         }
       },
       {
         "_index" : "cacm_standard_score",
-        "_id" : "5XjFZYAB9pJXcpxGibjo",
-        "_score" : 10.39101,
+        "_id" : "ZnjFZYAB9pJXcpxGibTl",
+        "_score" : 11.234488,
         "_source" : {
-          "id" : "1829"
+          "id" : "678"
         }
       },
       {
         "_index" : "cacm_standard_score",
-        "_id" : "03jFZYAB9pJXcpxGir2n",
-        "_score" : 10.323089,
+        "_id" : "eXjFZYAB9pJXcpxGibfn",
+        "_score" : 11.234488,
         "_source" : {
-          "id" : "3091"
+          "id" : "1465"
         }
       },
       {
         "_index" : "cacm_standard_score",
-        "_id" : "vHjFZYAB9pJXcpxGirym",
-        "_score" : 9.628572,
+        "_id" : "f3jFZYAB9pJXcpxGibbm",
+        "_score" : 9.900334,
         "_source" : {
-          "id" : "2812"
+          "id" : "1215"
         }
       },
       {
         "_index" : "cacm_standard_score",
-        "_id" : "jHjFZYAB9pJXcpxGibXl",
-        "_score" : 9.099797,
+        "_id" : "EXjFZYAB9pJXcpxGir2m",
+        "_score" : 9.900334,
         "_source" : {
-          "id" : "972"
+          "id" : "2897"
         }
       },
       {
         "_index" : "cacm_standard_score",
-        "_id" : "23jFZYAB9pJXcpxGibbm",
-        "_score" : 9.099797,
+        "_id" : "xnjFZYAB9pJXcpxGibfn",
+        "_score" : 9.552281,
         "_source" : {
-          "id" : "1307"
+          "id" : "1542"
         }
       }
     ]
@@ -819,13 +821,13 @@ Top 10 results of the `compiler program` query with and without the custom scori
 Query with custom function score:
 
 ```json
-GET /cacm_standard_stopwords/_search
+GET /cacm_standard/_search
 {
   "query": {
     "function_score": {
       "query": {
         "query_string": {
-          "query": "computer program",
+          "query": "compiler program",
           "default_field": "summary"
         }
       },
