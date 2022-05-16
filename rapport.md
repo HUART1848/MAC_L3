@@ -489,5 +489,6 @@ The results are:
 
 Several statements can be made regarding the previous results, here are our 3 concluding ones:
 
-1. All the indexes have the same number of document.
-2. The shingle-based indexes have the most terms.
+1. All the indexes have the same number of document, the presentation of the documents is not altered.
+2. The shingle-based indexes have the most terms. This make sense because they are the only indexes that add new terms in summary (the shingles).
+3. The custom stop words provided in `stop` are more restrictive than the default ones of `english`. This is confirmed by the lower number of terms in the `stop` index.
