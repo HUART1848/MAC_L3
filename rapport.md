@@ -585,3 +585,250 @@ Here are the results of the previous API requests:
 
 # D.14
 
+The new index with custom scoring method is created with the following API request:
+
+```json
+PUT /cacm_standard_score
+{
+  "settings": {
+    "number_of_shards": 1,
+    "similarity": {
+      "scripted_tfidf": {
+        "type": "scripted",
+        "script": {
+          "source": "double tf = 1 + Math.log(doc.freq); double idf = Math.log((field.docCount) / (term.docFreq + 1.0)) + 1.0; double norm = 1; return tf * idf * norm * query.boost;"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "author": { "type": "keyword" },
+      "date": { "type": "date" },
+      "id": { "type": "unsigned_long" }, 
+      "summary": { "similarity": "scripted_tfidf", "type": "text", "fielddata": true },
+      "title": { "type": "text", "fielddata": true }
+    }
+  }
+}
+
+POST _reindex
+{
+  "source": {
+    "index": "cacm_raw"
+  },
+  "dest": {
+    "index": "cacm_standard_score",
+    "pipeline": "my_pipeline"
+  }
+}
+```
+
+\pagebreak
+# D.15
+
+Here are the top 10 results of the `compiler program` query with and without the custom scoring system:
+
+#### Default scoring:
+
+```json
+"hits" : [
+      {
+        "_index" : "cacm_standard",
+        "_id" : "-njFZYAB9pJXcpxGir2n",
+        "_score" : 4.59885,
+        "_source" : {
+          "id" : "3130"
+        }
+      },
+      {
+        "_index" : "cacm_standard",
+        "_id" : "n3jFZYAB9pJXcpxGibfn",
+        "_score" : 4.5247345,
+        "_source" : {
+          "id" : "1503"
+        }
+      },
+      {
+        "_index" : "cacm_standard",
+        "_id" : "B3jFZYAB9pJXcpxGibLh",
+        "_score" : 4.391566,
+        "_source" : {
+          "id" : "71"
+        }
+      },
+      {
+        "_index" : "cacm_standard",
+        "_id" : "2XjFZYAB9pJXcpxGibbm",
+        "_score" : 4.308632,
+        "_source" : {
+          "id" : "1305"
+        }
+      },
+      {
+        "_index" : "cacm_standard",
+        "_id" : "MnjFZYAB9pJXcpxGir2m",
+        "_score" : 4.308632,
+        "_source" : {
+          "id" : "2930"
+        }
+      },
+      {
+        "_index" : "cacm_standard",
+        "_id" : "GnjFZYAB9pJXcpxGibbm",
+        "_score" : 4.2708445,
+        "_source" : {
+          "id" : "1114"
+        }
+      },
+      {
+        "_index" : "cacm_standard",
+        "_id" : "rXjFZYAB9pJXcpxGibrp",
+        "_score" : 4.139876,
+        "_source" : {
+          "id" : "2285"
+        }
+      },
+      {
+        "_index" : "cacm_standard",
+        "_id" : "-XjFZYAB9pJXcpxGibTl",
+        "_score" : 4.1280527,
+        "_source" : {
+          "id" : "825"
+        }
+      },
+      {
+        "_index" : "cacm_standard",
+        "_id" : "1njFZYAB9pJXcpxGibLj",
+        "_score" : 4.0737095,
+        "_source" : {
+          "id" : "278"
+        }
+      },
+      {
+        "_index" : "cacm_standard",
+        "_id" : "mHjFZYAB9pJXcpxGibTl",
+        "_score" : 4.0378237,
+        "_source" : {
+          "id" : "728"
+        }
+      }
+    ]
+```
+
+\pagebreak
+#### Custom scoring:
+
+```json
+"hits" : [
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "B3jFZYAB9pJXcpxGibLh",
+        "_score" : 11.760702,
+        "_source" : {
+          "id" : "71"
+        }
+      },
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "q3jFZYAB9pJXcpxGibXl",
+        "_score" : 11.38064,
+        "_source" : {
+          "id" : "1003"
+        }
+      },
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "n3jFZYAB9pJXcpxGibfn",
+        "_score" : 11.299849,
+        "_source" : {
+          "id" : "1503"
+        }
+      },
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "-njFZYAB9pJXcpxGir2n",
+        "_score" : 11.153636,
+        "_source" : {
+          "id" : "3130"
+        }
+      },
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "1njFZYAB9pJXcpxGibLj",
+        "_score" : 10.735809,
+        "_source" : {
+          "id" : "278"
+        }
+      },
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "5XjFZYAB9pJXcpxGibjo",
+        "_score" : 10.39101,
+        "_source" : {
+          "id" : "1829"
+        }
+      },
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "03jFZYAB9pJXcpxGir2n",
+        "_score" : 10.323089,
+        "_source" : {
+          "id" : "3091"
+        }
+      },
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "vHjFZYAB9pJXcpxGirym",
+        "_score" : 9.628572,
+        "_source" : {
+          "id" : "2812"
+        }
+      },
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "jHjFZYAB9pJXcpxGibXl",
+        "_score" : 9.099797,
+        "_source" : {
+          "id" : "972"
+        }
+      },
+      {
+        "_index" : "cacm_standard_score",
+        "_id" : "23jFZYAB9pJXcpxGibbm",
+        "_score" : 9.099797,
+        "_source" : {
+          "id" : "1307"
+        }
+      }
+    ]
+```
+
+\pagebreak
+# D.16
+
+Here is the query with the custom function score:
+
+```json
+GET /cacm_standard_stopwords/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "query_string": {
+          "query": "computer program",
+          "default_field": "summary"
+        }
+      },
+      "linear": {
+        "date": {
+          "origin": "1970-01-01",
+          "scale": "90d",
+          "offset": "0d",
+          "decay": 0.5
+        }
+      }
+    }
+  }
+}
+```
