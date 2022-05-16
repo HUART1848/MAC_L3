@@ -286,7 +286,7 @@ PUT /cacm_standard_english
       "author": {"type": "keyword"},
       "title":{"type": "text", "fielddata": true},
       "date":{"type": "date"},
-      "summary":{"type": "text", "fielddata" : true}
+      "summary":{"analyzer": "english", "type": "text", "fielddata" : true}
     }
   }
 }
@@ -331,23 +331,12 @@ PUT /cacm_standard_myanalyzer1
   },
   "mappings": {
     "properties": {
-      "id": {
-        "type": "unsigned_long"
-      },
-      "author": {
-        "type": "keyword"
-      },
-      "title": {
-        "type": "text",
-        "fielddata": true
-      },
-      "date": {
-        "type": "date"
-      },
-      "summary": {
-        "type": "text",
-        "fielddata": true
-      }
+      "id": { "type": "unsigned_long" },
+      "author": { "type": "keyword" },
+      "title": { "type": "text",
+        "fielddata": true },
+      "date": { "type": "date" },
+      "summary": { "analyzer": "my_analyzer1", "type": "text", "fielddata": true }
     }
   }
 }
@@ -393,23 +382,11 @@ PUT /cacm_standard_myanalyzer2
   },
   "mappings": {
     "properties": {
-      "id": {
-        "type": "unsigned_long"
-      },
-      "author": {
-        "type": "keyword"
-      },
-      "title": {
-        "type": "text",
-        "fielddata": true
-      },
-      "date": {
-        "type": "date"
-      },
-      "summary": {
-        "type": "text",
-        "fielddata": true
-      }
+      "id": { "type": "unsigned_long" },
+      "author": { "type": "keyword" },
+      "title": { "type": "text", "fielddata": true },
+      "date": { "type": "date" },
+      "summary": {"analyzer": "my_analyzer2", "type": "text", "fielddata": true } 
     }
   }
 }
@@ -450,24 +427,11 @@ PUT /cacm_standard_stopwords
   },
   "mappings": {
     "properties": {
-      "id": {
-        "type": "unsigned_long"
-      },
-      "author": {
-        "type": "keyword"
-      },
-      "title": {
-        "type": "text",
-        "fielddata": true
-      },
-      "date": {
-        "type": "date"
-      },
-      "summary": {
-        "analyzer" : "stopwords",
-        "type": "text",
-        "fielddata": true
-      }
+      "id": { "type": "unsigned_long" },
+      "author": { "type": "keyword" },
+      "title": { "type": "text", "fielddata": true },
+      "date": { "type": "date" },
+      "summary": { "analyzer" : "stopwords", "type": "text", "fielddata": true }
     }
   }
 }
@@ -484,6 +448,7 @@ POST _reindex
 }
 ```
 
+\pagebreak
 ## D.9
 
 Explanation of the analyzers, according to the Elasticsearch documentation:
@@ -499,7 +464,6 @@ plural to singular conversion and other similar language-specific filters.
   The text `"I Love MAC"` would produce `["I", "I Love MAC", "Love", "MAC"]`.
 * `stop` : Uses a list of words as stop words that will be removed from the the requested text.
 
-\pagebreak
 ## D.10
 
 Using the Index stats and search APIs with the following types of requests:
@@ -519,3 +483,11 @@ The results are:
 |**c)**|of \newline the \newline is \newline and \newline a \newline to \newline in \newline for \newline The \newline are|which \newline us \newline comput \newline program \newline system \newline present \newline describ \newline paper \newline can \newline gener|the \newline of \newline a \newline is \newline and \newline to \newline in \newline for \newline are \newline of the|the \newline of \newline a \newline is \newline and \newline to \newline in \newline for \newline are \newline this|computer \newline system \newline paper \newline presented \newline time \newline program \newline data \newline method \newline algorithm \newline discussed|
 |**d)**|13'542'719 B|19'859'606 B|2'597'942 B|3'615'184 B|2'833'980 B|
 |**e)**|350 ms|250 ms|340 ms|300 ms|340 ms|
+
+\pagebreak
+# D.11
+
+Several statements can be made regarding the previous results, here are our 3 concluding ones:
+
+1. All the indexes have the same number of document.
+2. The shingle-based indexes have the most terms.
